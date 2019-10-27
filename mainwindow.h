@@ -22,6 +22,8 @@ public:
 
 private:
     void keyPressEvent(QKeyEvent* event) override;
+    void keyReleaseEvent(QKeyEvent* event) override;
+    void keyProcess(int key, bool pressed);
     void Init();
     void VideoStream();
     void Help();
@@ -30,6 +32,5 @@ private:
     Ui::MainWindow* ui;
 
     std::unique_ptr<TelloDriver> tello;
-//    std::unordered_map<Qt::Key, std::func<void(
 };
 #endif // MAINWINDOW_H
