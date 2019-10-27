@@ -31,20 +31,34 @@ MainWindow::MainWindow(QWidget *parent)
                &pitch, &roll, &yaw, &vgx, &vgy, &vgz, &templ, &temph,
                &tof, &h, &bat, &baro, &time, &agx, &agy, &agz);
 
-//        QString str_debug(datagram.data().data());
-//        qDebug() << str_debug;
-
         ui->pitch->setText("pitch: " + QString::number(pitch) + " ");
         ui->roll->setText("roll: " + QString::number(roll) + " ");
         ui->yaw->setText("yaw: " + QString::number(yaw) + " ");
         ui->vgx->setText("vgx: " + QString::number(vgx) + " см/с");
         ui->vgy->setText("vgy: " + QString::number(vgy) + " см/с");
         ui->vgz->setText("vgz: " + QString::number(vgz) + " см/с");
+
+        if(templ >= 80)
+            ui->templ->setStyleSheet("QLabel { color : red; }");
+        else
+            ui->templ->setStyleSheet("QLabel { color : black; }");
         ui->templ->setText("Temp lowest: " + QString::number(templ) + " °C");
+
+        if(temph >= 80)
+            ui->temph->setStyleSheet("QLabel { color : red; }");
+        else
+            ui->temph->setStyleSheet("QLabel { color : black; }");
         ui->temph->setText("Temp highest: " + QString::number(temph) + " °C");
+
         ui->tof->setText("TOF distance: " + QString::number(tof) + " см");
         ui->h->setText("Height: " + QString::number(h) + " см");
+
+        if(bat <= 20)
+            ui->bat->setStyleSheet("QLabel { color : red; }");
+        else
+            ui->bat->setStyleSheet("QLabel { color : black; }");
         ui->bat->setText("Battery: " + QString::number(bat) + " %");
+
         ui->time->setText("Time: " + QString::number(time) + " с");
         ui->baro->setText("Barometer: " + QString::number(baro) + " см");
         ui->agx->setText("agx: " + QString::number(agx) + " см²/с");
