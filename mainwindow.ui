@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>800</width>
+    <height>600</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>MainWindow</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QVBoxLayout" name="verticalLayout_8">
+    <item>
+     <layout class="QHBoxLayout" name="horizontalLayout_3">
+      <item>
+       <layout class="QVBoxLayout" name="verticalLayout_7">
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout">
+          <item>
+           <layout class="QVBoxLayout" name="verticalLayout_5">
+            <item>
+             <widget class="QLabel" name="bat">
+              <property name="text">
+               <string>Battery: </string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="time">
+              <property name="text">
+               <string>Time: </string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="baro">
+              <property name="text">
+               <string>Barometer: </string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <layout class="QVBoxLayout" name="verticalLayout_3">
+            <item>
+             <widget class="QLabel" name="templ">
+              <property name="text">
+               <string>Temp lowest: </string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="temph">
+              <property name="text">
+               <string>Temp highest: </string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <layout class="QVBoxLayout" name="verticalLayout_6">
+            <item>
+             <widget class="QLabel" name="h">
+              <property name="text">
+               <string>Height: </string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="tof">
+              <property name="text">
+               <string>TOF distance: </string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <spacer name="verticalSpacer_2">
+          <property name="orientation">
+           <enum>Qt::Vertical</enum>
+          </property>
+          <property name="sizeType">
+           <enum>QSizePolicy::Minimum</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>20</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_2">
+          <item>
+           <layout class="QVBoxLayout" name="verticalLayout_2">
+            <item>
+             <widget class="QLabel" name="vgx">
+              <property name="text">
+               <string>vgx: </string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="vgy">
+              <property name="text">
+               <string>vgy: </string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="vgz">
+              <property name="text">
+               <string>vgz: </string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <layout class="QVBoxLayout" name="verticalLayout_4">
+            <item>
+             <widget class="QLabel" name="agx">
+              <property name="text">
+               <string>agx: </string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="agy">
+              <property name="text">
+               <string>agy: </string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="agz">
+              <property name="text">
+               <string>agz: </string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <layout class="QVBoxLayout" name="verticalLayout">
+            <item>
+             <widget class="QLabel" name="pitch">
+              <property name="text">
+               <string>pitch: </string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="roll">
+              <property name="text">
+               <string>roll: </string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="yaw">
+              <property name="text">
+               <string>yaw: </string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <spacer name="verticalSpacer">
+          <property name="orientation">
+           <enum>Qt::Vertical</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>20</width>
+            <height>40</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <widget class="QTextBrowser" name="textBrowserCmd">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Fixed" vsizetype="Expanding">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>200</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <property name="focusPolicy">
+         <enum>Qt::NoFocus</enum>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
