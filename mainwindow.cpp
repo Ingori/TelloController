@@ -101,10 +101,9 @@ void MainWindow::keyPressEvent(QKeyEvent* event)
         case Qt::Key_Left:
         case Qt::Key_Right:
         case Qt::Key_W:
-        case Qt::Key_Space:
         case Qt::Key_S:
-        case Qt::Key_Q:
-        case Qt::Key_E:
+        case Qt::Key_A:
+        case Qt::Key_D:
             keyProcess(event->key(), true); return;
 
         default: return;
@@ -123,10 +122,9 @@ void MainWindow::keyReleaseEvent(QKeyEvent *event)
         case Qt::Key_Left:
         case Qt::Key_Right:
         case Qt::Key_W:
-        case Qt::Key_Space:
         case Qt::Key_S:
-        case Qt::Key_Q:
-        case Qt::Key_E:
+        case Qt::Key_A:
+        case Qt::Key_D:
             keyProcess(event->key(), false); return;
 
         default: return;
@@ -141,8 +139,8 @@ void MainWindow::keyProcess(int key, bool pressed)
     static bool Right = false;
     static bool W = false;
     static bool S = false;
-    static bool Q = false;
-    static bool E = false;
+    static bool A = false;
+    static bool D = false;
 
     switch(key)
     {
@@ -150,11 +148,10 @@ void MainWindow::keyProcess(int key, bool pressed)
         case Qt::Key_Down: Down = pressed; break;
         case Qt::Key_Left: Left = pressed; break;
         case Qt::Key_Right: Right = pressed; break;
-        case Qt::Key_W:
-        case Qt::Key_Space: W = pressed; break;
+        case Qt::Key_W: W = pressed; break;
         case Qt::Key_S: S = pressed; break;
-        case Qt::Key_Q: Q = pressed; break;
-        case Qt::Key_E: E = pressed; break;
+        case Qt::Key_A: A = pressed; break;
+        case Qt::Key_D: D = pressed; break;
         default: return;
     }
 
@@ -173,9 +170,9 @@ void MainWindow::keyProcess(int key, bool pressed)
         c = coef;
     if(S)
         c -= coef;
-    if(E)
+    if(D)
         d = coef;
-    if(Q)
+    if(A)
         d -= coef;
 
     static int old_a = 0;
