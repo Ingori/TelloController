@@ -66,11 +66,32 @@ MainWindow::MainWindow(QWidget *parent)
         ui->agz->setText("agz: " + QString::number(agz) + " см²/с");
     });
 
-//    tello->SetStreamCB([this](const QNetworkDatagram& data)
-//    {
-////        static int x = 0;
-////        setWindowTitle("TelloController " + QString::number(x++));
-//    });
+//    player = new QMediaPlayer;
+
+//    videoWidget = new QVideoWidget;
+//    player->setVideoOutput(videoWidget);
+//    videoWidget->setFullScreen(true);
+
+//    videoWidget->showNormal();
+//    player->play();
+
+    player = new QMediaPlayer;
+    videoWidget = new QVideoWidget;
+    surface = new MyVideoSurface;
+//    Q
+    player->setVideoOutput(videoWidget);
+    videoWidget->setFullScreen(true);
+
+    videoWidget->showNormal();
+    player->play();
+
+    tello->SetStreamCB([this](const QNetworkDatagram& data)
+    {
+        //        static int x = 0;
+        //        setWindowTitle("TelloController " + QString::number(x++));
+
+        /**/
+    });
 }
 
 MainWindow::~MainWindow()
