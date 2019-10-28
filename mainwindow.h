@@ -56,5 +56,6 @@ private:
 //    QUdpSocket* stream_sock;
 //    QByteArray array;
 //    QBuffer* buffer;
+    QFile* file;
 };
 #endif // MAINWINDOW_H

@@ -29,17 +29,19 @@ MainWindow::MainWindow(QWidget *parent)
 
 
 //    player->setMedia(QUrl::fromLocalFile("D:/Od/OneDrive/MyProjects/Tello/media/z_raw_video"));
+//    player->setMedia(QUrl::fromLocalFile("D:/Od/OneDrive/MyProjects/Tello/raw_video_from_app"));
 //    QFile* file = new QFile("D:/Od/OneDrive/MyProjects/Tello/media/z_raw_video");
 //    CustomFile file("D:/Od/OneDrive/MyProjects/Tello/media/z_raw_video");
 
-    QFile file("D:/Od/OneDrive/MyProjects/Tello/media/Serenity.mp4");
-    file.open(QIODevice::ReadOnly);
-    QByteArray *array = new QByteArray(file.readAll());
-    QBuffer* buffer = new QBuffer(player);
-    buffer->setData(*array);
-    buffer->open(QIODevice::ReadOnly);
+//    QFile file("D:/Od/OneDrive/MyProjects/Tello/media/Serenity.mp4");
+    file = new QFile("D:/Od/OneDrive/MyProjects/Tello/raw_video_from_app");
+    file->open(QIODevice::ReadOnly);
+//    QByteArray *array = new QByteArray(file.readAll());
+//    QBuffer* buffer = new QBuffer(player);
+//    buffer->setData(*array);
+//    buffer->open(QIODevice::ReadOnly);
 
-    player->setMedia(QMediaContent(), buffer);
+    player->setMedia(QMediaContent(QUrl()), file);
 
 //    player->setMedia(QUrl("http://0.0.0.0:1111"));
 
