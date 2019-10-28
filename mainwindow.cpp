@@ -10,6 +10,37 @@ MainWindow::MainWindow(QWidget *parent)
     ui->setupUi(this);
     setWindowTitle("TelloController");
 
+//    QUdpSocket* stream_sock = new QUdpSocket;
+//    stream_sock->abort();
+//    if(!stream_sock->bind(QHostAddress("0.0.0.0"), 11111, QUdpSocket::DontShareAddress))
+//        throw std::invalid_argument("Can't bind to socket: 0.0.0.0:11111");
+//    stream_sock->open(QIODevice::ReadOnly);
+////    stream_sock->seek(qint64(0));
+
+//    player = new QMediaPlayer;
+    player = new QMediaPlayer(nullptr, QMediaPlayer::StreamPlayback);
+    connect(player, QOverload<QMediaPlayer::Error>::of(&QMediaPlayer::error),
+        [this](QMediaPlayer::Error error){ PlayerError(error); });
+    connect(player, SIGNAL(mediaStatusChanged(QMediaPlayer::MediaStatus)), this, SLOT(onMediaStatusChanged(QMediaPlayer::MediaStatus)));
+//    connect(player, SIGNAL(networkConfigurationChanged(QMediaPlayer::MediaStatus)), this, SLOT(onNetworkConfigurationChanged(QMediaPlayer::MediaStatus)));
+//    player->setMedia(QUrl::fromLocalFile("D:/Od/OneDrive/MyProjects/Tello/media/Serenity.mp4"));
+//    player->setMedia(QMediaContent(), stream_sock);
+    player->setMedia(QUrl::fromLocalFile("D:/Od/OneDrive/MyProjects/Tello/media/z_raw_video"));
+
+//    player = new QMediaPlayer(nullptr, QMediaPlayer::StreamPlayback);
+//    QFile file("D:/Od/OneDrive/MyProjects/Tello/media/Serenity.mp4");
+//    file.open(QFile::ReadOnly);
+//    player->setMedia(QMediaContent(), &file);
+
+    videoWidget = new QVideoWidget;
+    videoWidget->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding));
+    ui->verticalLayout_7->addWidget(videoWidget);
+
+    player->setVideoOutput(videoWidget);
+
+    videoWidget->show();
+    player->play();
+
     tello = std::make_unique<TelloDriver>();
     tello->SetCmdOutCB([this](const std::string& data)
     {
@@ -19,83 +50,28 @@ MainWindow::MainWindow(QWidget *parent)
     {
         ui->textBrowserCmd->append(data.data());
     });
-
     tello->SetTelemetryCB([this](const QNetworkDatagram& datagram)
     {
-        std::int32_t pitch, roll, yaw, vgx, vgy, vgz, templ, temph, tof, h, bat, time;
-        double baro, agx, agy, agz;
-
-        sscanf(datagram.data().data(),
-               "pitch:%d;roll:%d;yaw:%d;vgx:%d;vgy:%d;vgz:%d;templ:%d;temph:%d;"
-               "tof:%d;h:%d;bat:%d;baro:%lf;time:%d;agx:%lf;agy:%lf;agz:%lf;\r\n",
-               &pitch, &roll, &yaw, &vgx, &vgy, &vgz, &templ, &temph,
-               &tof, &h, &bat, &baro, &time, &agx, &agy, &agz);
-
-        ui->pitch->setText("pitch: " + QString::number(pitch) + " ");
-        ui->roll->setText("roll: " + QString::number(roll) + " ");
-        ui->yaw->setText("yaw: " + QString::number(yaw) + " ");
-        ui->vgx->setText("vgx: " + QString::number(vgx) + " см/с");
-        ui->vgy->setText("vgy: " + QString::number(vgy) + " см/с");
-        ui->vgz->setText("vgz: " + QString::number(vgz) + " см/с");
-
-        if(templ >= 80)
-            ui->templ->setStyleSheet("QLabel { color : red; }");
-        else
-            ui->templ->setStyleSheet("QLabel { color : black; }");
-        ui->templ->setText("Temp lowest: " + QString::number(templ) + " °C");
-
-        if(temph >= 80)
-            ui->temph->setStyleSheet("QLabel { color : red; }");
-        else
-            ui->temph->setStyleSheet("QLabel { color : black; }");
-        ui->temph->setText("Temp highest: " + QString::number(temph) + " °C");
-
-        ui->tof->setText("TOF distance: " + QString::number(tof) + " см");
-        ui->h->setText("Height: " + QString::number(h) + " см");
-
-        if(bat <= 20)
-            ui->bat->setStyleSheet("QLabel { color : red; }");
-        else
-            ui->bat->setStyleSheet("QLabel { color : black; }");
-        ui->bat->setText("Battery: " + QString::number(bat) + " %");
-
-        ui->time->setText("Time: " + QString::number(time) + " с");
-        ui->baro->setText("Barometer: " + QString::number(baro) + " см");
-        ui->agx->setText("agx: " + QString::number(agx) + " см²/с");
-        ui->agy->setText("agy: " + QString::number(agy) + " см²/с");
-        ui->agz->setText("agz: " + QString::number(agz) + " см²/с");
+        SetTelemetry(datagram);
     });
+//    tello->SetStreamCB([this](const QNetworkDatagram& datagram)
+//    {
+//        static int x = 0;
+//        if(x > 10000)
+//        {
+//            return;
+//        }
 
-//    player = new QMediaPlayer;
+//        setWindowTitle("TelloController " + QString::number(x++));
 
-//    videoWidget = new QVideoWidget;
-//    player->setVideoOutput(videoWidget);
-//    videoWidget->setFullScreen(true);
-
-//    videoWidget->showNormal();
-//    player->play();
-
-    player = new QMediaPlayer;
-    videoWidget = new QVideoWidget;
-    surface = new MyVideoSurface;
-//    Q
-    player->setVideoOutput(videoWidget);
-    videoWidget->setFullScreen(true);
-
-    videoWidget->showNormal();
-    player->play();
-
-    tello->SetStreamCB([this](const QNetworkDatagram& data)
-    {
-        //        static int x = 0;
-        //        setWindowTitle("TelloController " + QString::number(x++));
-
-        /**/
-    });
+//        array += datagram.data();
+//    });
 }
 
 MainWindow::~MainWindow()
 {
+    delete videoWidget;
+    delete player;
     delete ui;
 }
 
@@ -270,6 +246,62 @@ void MainWindow::Help()
                             "Shift + W:     Получить параметры wifi.\r\n"
                             "Shift + S:     Получить значение скорости.\r\n"
                             "Shift + P:     Мгновенное отключение двигателей(Осторожно!).\r\n"
-                            );
+                             );
+}
+
+void MainWindow::SetTelemetry(const QNetworkDatagram &datagram)
+{
+    std::int32_t pitch, roll, yaw, vgx, vgy, vgz, templ, temph, tof, h, bat, time;
+    double baro, agx, agy, agz;
+
+    sscanf(datagram.data().data(),
+           "pitch:%d;roll:%d;yaw:%d;vgx:%d;vgy:%d;vgz:%d;templ:%d;temph:%d;"
+           "tof:%d;h:%d;bat:%d;baro:%lf;time:%d;agx:%lf;agy:%lf;agz:%lf;\r\n",
+           &pitch, &roll, &yaw, &vgx, &vgy, &vgz, &templ, &temph,
+           &tof, &h, &bat, &baro, &time, &agx, &agy, &agz);
+
+    ui->pitch->setText("pitch: " + QString::number(pitch) + " ");
+    ui->roll->setText("roll: " + QString::number(roll) + " ");
+    ui->yaw->setText("yaw: " + QString::number(yaw) + " ");
+    ui->vgx->setText("vgx: " + QString::number(vgx) + " см/с");
+    ui->vgy->setText("vgy: " + QString::number(vgy) + " см/с");
+    ui->vgz->setText("vgz: " + QString::number(vgz) + " см/с");
+
+    if(templ >= 80)
+        ui->templ->setStyleSheet("QLabel { color : red; }");
+    else
+        ui->templ->setStyleSheet("QLabel { color : black; }");
+    ui->templ->setText("Temp lowest: " + QString::number(templ) + " °C");
+
+    if(temph >= 80)
+        ui->temph->setStyleSheet("QLabel { color : red; }");
+    else
+        ui->temph->setStyleSheet("QLabel { color : black; }");
+    ui->temph->setText("Temp highest: " + QString::number(temph) + " °C");
+
+    ui->tof->setText("TOF distance: " + QString::number(tof) + " см");
+    ui->h->setText("Height: " + QString::number(h) + " см");
+
+    if(bat <= 20)
+        ui->bat->setStyleSheet("QLabel { color : red; }");
+    else
+        ui->bat->setStyleSheet("QLabel { color : black; }");
+    ui->bat->setText("Battery: " + QString::number(bat) + " %");
+
+    ui->time->setText("Time: " + QString::number(time) + " с");
+    ui->baro->setText("Barometer: " + QString::number(baro) + " см");
+    ui->agx->setText("agx: " + QString::number(agx) + " см²/с");
+    ui->agy->setText("agy: " + QString::number(agy) + " см²/с");
+    ui->agz->setText("agz: " + QString::number(agz) + " см²/с");
+}
+
+void MainWindow::PlayerError(QMediaPlayer::Error error)
+{
+    qDebug() << "media error: " << error;
+}
+
+void MainWindow::onMediaStatusChanged(QMediaPlayer::MediaStatus media_status)
+{
+    qDebug() << "media status changed: " << media_status;
 }
 

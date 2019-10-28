@@ -8,30 +8,9 @@
 #include <QInputEvent>
 
 #include <QMediaPlayer>
-#include <QMediaPlaylist>
 #include <QVideoWidget>
-#include <QAbstractVideoSurface>
-//#include <unordered_map>
-
-class MyVideoSurface : public QAbstractVideoSurface
-{
-    QList<QVideoFrame::PixelFormat> supportedPixelFormats(
-            QAbstractVideoBuffer::HandleType handleType = QAbstractVideoBuffer::NoHandle) const
-    {
-        Q_UNUSED(handleType);
-
-        // Return the formats you will support
-        return QList<QVideoFrame::PixelFormat>() << QVideoFrame::Format_RGB565;
-    }
-
-    bool present(const QVideoFrame &frame)
-    {
-        Q_UNUSED(frame);
-        // Handle the frame and do your processing
-
-        return true;
-    }
-};
+#include <QIODevice>
+#include <QBuffer>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -52,6 +31,11 @@ private:
     void Init();
     void VideoStream();
     void Help();
+    void SetTelemetry(const QNetworkDatagram& datagram);
+    void PlayerError(QMediaPlayer::Error error);
+
+private slots:
+    void onMediaStatusChanged(QMediaPlayer::MediaStatus media_status);
 
 private:
     Ui::MainWindow* ui;
@@ -61,6 +45,9 @@ private:
 
     QMediaPlayer* player;
     QVideoWidget* videoWidget;
-    MyVideoSurface* surface;
+
+//    QUdpSocket* stream_sock;
+    QByteArray array;
+    QBuffer* buffer;
 };
 #endif // MAINWINDOW_H
