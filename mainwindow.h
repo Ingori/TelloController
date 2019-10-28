@@ -12,6 +12,13 @@
 #include <QIODevice>
 #include <QBuffer>
 
+class CustomFile : public QFile
+{
+public:
+    CustomFile(const QString& file) : QFile(file) {}
+    bool isSequential() const override;
+};
+
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
@@ -32,10 +39,10 @@ private:
     void VideoStream();
     void Help();
     void SetTelemetry(const QNetworkDatagram& datagram);
-//    void PlayerError(QMediaPlayer::Error error);
+    void PlayerError(QMediaPlayer::Error error);
 
-//private slots:
-//    void onMediaStatusChanged(QMediaPlayer::MediaStatus media_status);
+private slots:
+    void onMediaStatusChanged(QMediaPlayer::MediaStatus media_status);
 
 private:
     Ui::MainWindow* ui;
@@ -47,7 +54,7 @@ private:
     QVideoWidget* videoWidget;
 
 //    QUdpSocket* stream_sock;
-    QByteArray array;
-    QBuffer* buffer;
+//    QByteArray array;
+//    QBuffer* buffer;
 };
 #endif // MAINWINDOW_H
