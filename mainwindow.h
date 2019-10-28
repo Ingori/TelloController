@@ -32,10 +32,10 @@ private:
     void VideoStream();
     void Help();
     void SetTelemetry(const QNetworkDatagram& datagram);
-    void PlayerError(QMediaPlayer::Error error);
+//    void PlayerError(QMediaPlayer::Error error);
 
-private slots:
-    void onMediaStatusChanged(QMediaPlayer::MediaStatus media_status);
+//private slots:
+//    void onMediaStatusChanged(QMediaPlayer::MediaStatus media_status);
 
 private:
     Ui::MainWindow* ui;

@@ -19,9 +19,9 @@ MainWindow::MainWindow(QWidget *parent)
 
 //    player = new QMediaPlayer;
     player = new QMediaPlayer(nullptr, QMediaPlayer::StreamPlayback);
-    connect(player, QOverload<QMediaPlayer::Error>::of(&QMediaPlayer::error),
-        [this](QMediaPlayer::Error error){ PlayerError(error); });
-    connect(player, SIGNAL(mediaStatusChanged(QMediaPlayer::MediaStatus)), this, SLOT(onMediaStatusChanged(QMediaPlayer::MediaStatus)));
+//    connect(player, QOverload<QMediaPlayer::Error>::of(&QMediaPlayer::error),
+//        [this](QMediaPlayer::Error error){ PlayerError(error); });
+//    connect(player, SIGNAL(mediaStatusChanged(QMediaPlayer::MediaStatus)), this, SLOT(onMediaStatusChanged(QMediaPlayer::MediaStatus)));
 //    connect(player, SIGNAL(networkConfigurationChanged(QMediaPlayer::MediaStatus)), this, SLOT(onNetworkConfigurationChanged(QMediaPlayer::MediaStatus)));
 //    player->setMedia(QUrl::fromLocalFile("D:/Od/OneDrive/MyProjects/Tello/media/Serenity.mp4"));
 //    player->setMedia(QMediaContent(), stream_sock);
@@ -295,13 +295,13 @@ void MainWindow::SetTelemetry(const QNetworkDatagram &datagram)
     ui->agz->setText("agz: " + QString::number(agz) + " см²/с");
 }
 
-void MainWindow::PlayerError(QMediaPlayer::Error error)
-{
-    qDebug() << "media error: " << error;
-}
+//void MainWindow::PlayerError(QMediaPlayer::Error error)
+//{
+//    qDebug() << "media error: " << error;
+//}
 
-void MainWindow::onMediaStatusChanged(QMediaPlayer::MediaStatus media_status)
-{
-    qDebug() << "media status changed: " << media_status;
-}
+//void MainWindow::onMediaStatusChanged(QMediaPlayer::MediaStatus media_status)
+//{
+//    qDebug() << "media status changed: " << media_status;
+//}
 
