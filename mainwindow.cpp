@@ -2,6 +2,7 @@
 #include "ui_mainwindow.h"
 #include <QMessageBox>
 #include <exception>
+#include <QMediaPlaylist>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -15,40 +16,34 @@ MainWindow::MainWindow(QWidget *parent)
 //    if(!stream_sock->bind(QHostAddress("0.0.0.0"), 11111, QUdpSocket::DontShareAddress))
 //        throw std::invalid_argument("Can't bind to socket: 0.0.0.0:11111");
 //    stream_sock->open(QIODevice::ReadOnly);
-////    stream_sock->seek(qint64(0));
+//////    stream_sock->seek(qint64(0));
 
 //    player = new QMediaPlayer;
-//    player = new QMediaPlayer(nullptr, QMediaPlayer::StreamPlayback);
-    player = new QMediaPlayer;
+    player = new QMediaPlayer(nullptr, QMediaPlayer::StreamPlayback);
+//    player = new QMediaPlayer;
     connect(player, QOverload<QMediaPlayer::Error>::of(&QMediaPlayer::error),
         [this](QMediaPlayer::Error error){ PlayerError(error); });
     connect(player, SIGNAL(mediaStatusChanged(QMediaPlayer::MediaStatus)), this, SLOT(onMediaStatusChanged(QMediaPlayer::MediaStatus)));
-//    connect(player, SIGNAL(networkConfigurationChanged(QMediaPlayer::MediaStatus)), this, SLOT(onNetworkConfigurationChanged(QMediaPlayer::MediaStatus)));
-//    player->setMedia(QUrl::fromLocalFile("D:/Od/OneDrive/MyProjects/Tello/media/Serenity.mp4"));
-//    player->setMedia(QMediaContent(), stream_sock);
 
-
-//    player->setMedia(QUrl::fromLocalFile("D:/Od/OneDrive/MyProjects/Tello/media/z_raw_video"));
-//    player->setMedia(QUrl::fromLocalFile("D:/Od/OneDrive/MyProjects/Tello/raw_video_from_app"));
-//    QFile* file = new QFile("D:/Od/OneDrive/MyProjects/Tello/media/z_raw_video");
-//    CustomFile file("D:/Od/OneDrive/MyProjects/Tello/media/z_raw_video");
-
-//    QFile file("D:/Od/OneDrive/MyProjects/Tello/media/Serenity.mp4");
     file = new QFile("D:/Od/OneDrive/MyProjects/Tello/raw_video_from_app");
     file->open(QIODevice::ReadOnly);
-//    QByteArray *array = new QByteArray(file.readAll());
-//    QBuffer* buffer = new QBuffer(player);
-//    buffer->setData(*array);
-//    buffer->open(QIODevice::ReadOnly);
+//    QFile* file2 = new QFile("D:/Od/OneDrive/MyProjects/Tello/raw_video_backup");
+//    file2->open(QIODevice::ReadOnly);
+    array = file->readAll();
+    buffer.setData(array);
+    buffer.open(QIODevice::ReadOnly);
 
-    player->setMedia(QMediaContent(QUrl()), file);
+//    QMediaPlaylist *playlist = new QMediaPlaylist;
+//    player->setPlaylist(playlist);
+//    playlist->addMedia(QUrl("udp://0.0.0.0:1111"));
 
-//    player->setMedia(QUrl("http://0.0.0.0:1111"));
-
-//    player = new QMediaPlayer(nullptr, QMediaPlayer::StreamPlayback);
-//    QFile file("D:/Od/OneDrive/MyProjects/Tello/media/Serenity.mp4");
-//    file.open(QFile::ReadOnly);
-//    player->setMedia(QMediaContent(), &file);
+//    player->setMedia(QMediaContent(QUrl()), file);
+//    playe
+//    player->setMedia(QMediaContent(QUrl()), file2);
+    player->setMedia(QMediaContent(QUrl()), &buffer);
+//    player->setMedia(QMediaContent(QUrl()), stream_sock);
+//    player->setMedia(QMediaContent(QUrl("udp://0.0.0.0:1111")));
+//    player->setMedia(QMediaContent(QUrl()), data_stream.device());
 
     videoWidget = new QVideoWidget;
     videoWidget->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding));
@@ -74,15 +69,6 @@ MainWindow::MainWindow(QWidget *parent)
     });
 //    tello->SetStreamCB([this](const QNetworkDatagram& datagram)
 //    {
-//        static int x = 0;
-//        if(x > 10000)
-//        {
-//            return;
-//        }
-
-//        setWindowTitle("TelloController " + QString::number(x++));
-
-//        array += datagram.data();
 //    });
 }
 
@@ -321,10 +307,4 @@ void MainWindow::PlayerError(QMediaPlayer::Error error)
 void MainWindow::onMediaStatusChanged(QMediaPlayer::MediaStatus media_status)
 {
     qDebug() << "media status changed: " << media_status;
-}
-
-
-bool CustomFile::isSequential() const
-{
-    return false;
 }
